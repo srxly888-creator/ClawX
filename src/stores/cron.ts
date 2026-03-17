@@ -59,7 +59,13 @@ export const useCronStore = create<CronState>((set) => ({
       });
       set((state) => ({
         jobs: state.jobs.map((job) =>
-          job.id === id ? { ...job, ...input, updatedAt: new Date().toISOString() } : job
+          job.id === id ? {
+            ...job,
+            ...input,
+            ...(input.target === null ? { target: undefined } : {}),
+            ...(input.agentId === null ? { agentId: undefined } : {}),
+            updatedAt: new Date().toISOString(),
+          } : job
         ),
       }));
     } catch (error) {
